@@ -1,7 +1,7 @@
 # Phase 4, Lecture 7 - Deployment
 
 - Postgres
-- Application environments and enviroment variables
+- Application environments and environment variables
 - Production ready configuration
 - Configuration of build steps for react application
 - Telling Heroku how to run our application
@@ -323,13 +323,10 @@ rails g controller fallback
 ```
 
 ```rb
-class FallbackController < ApplicationController
-  include ActionController::MimeResponds
+class FallbackController < ActionController::Base
 
   def index
-    respond_to do |format|
-      format.html { render body: Rails.root.join('public/index.html').read }
-    end
+    render file: 'public/index.html'
   end
 end
 ```

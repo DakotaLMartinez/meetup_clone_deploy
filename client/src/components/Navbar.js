@@ -1,10 +1,29 @@
 import React, { useState } from 'react'
 import { NavLink } from 'react-router-dom'
+import CloudinaryUpload from './CloudinaryUpload'
 
 function Navbar({setCurrentUser, currentUser, handleLogout}) {
 
   const [navbarOpen, setNavbarOpen] = useState(false)
 
+  const handleUpload = (result) => {
+    const body = {
+      profile_picture_url: result.info.secure_url,
+      profile_picture_thumbnail_url: result.info.eager[0].secure_url
+    }
+    fetch('/api/me', {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    })
+      .then(res => res.json())
+      .then(user => {
+        console.log(user);
+        setCurrentUser(user)
+      })
+  }
   const profilePic = () => {
     if (currentUser.profile_picture_thumbnail_url) {
       return (
@@ -32,7 +51,11 @@ function Navbar({setCurrentUser, currentUser, handleLogout}) {
         </button>
         <div className="relative w-52">
           <div className={`flex flex-col w-52 bg-white shadow overflow-hidden absolute space-y-3 text-lg ${navbarOpen ? 'p-4 max-h-screen' : 'p-0 max-h-0'}`}>
-            <button>Add Profile Picture</button>
+            <CloudinaryUpload
+              preset="sxyvnfnd"
+              buttonText="Add Profile Picture"
+              handleUpload={handleUpload}
+            />
             <hr/>
             <button onClick={handleLogout}>Logout</button>
           </div>

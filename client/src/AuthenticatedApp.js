@@ -1,7 +1,8 @@
 import './App.css';
 import GroupsContainer from './components/GroupsContainer'
 import EventsContainer from './components/EventsContainer'
-import { Switch, Route, NavLink, Redirect, useHistory } from 'react-router-dom'
+import Navbar from './components/Navbar'
+import { Switch, Route, Redirect, useHistory } from 'react-router-dom'
 
 function AuthenticatedApp({ currentUser, setCurrentUser }) {
   const history = useHistory()
@@ -18,15 +19,14 @@ function AuthenticatedApp({ currentUser, setCurrentUser }) {
         }
       })
   }
+
   return (
-    <div className="App">
-      <nav>
-        <span>
-          <NavLink to="/groups">Groups</NavLink>{" - "}
-          <NavLink to="/events">Events</NavLink>
-        </span>
-        <span>Logged in as {currentUser.username} <button onClick={handleLogout}>Logout</button></span>
-      </nav>
+    <div className="App max-w-5xl">
+      <Navbar
+        setCurrentUser={setCurrentUser}
+        currentUser={currentUser}
+        handleLogout={handleLogout}
+      />
       <Switch>
         <Route path="/groups">
           <GroupsContainer />

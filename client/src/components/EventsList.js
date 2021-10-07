@@ -14,15 +14,15 @@ function EventsList({ events, groups, removeRsvpToEvent, cancelEvent, rsvpToEven
 
   const rsvpOrCancelButton = (event) => {
     if (event.user_event) {
-      return <button onClick={() => removeRsvpToEvent(event.id)}>Cancel RSVP</button>
+      return <button className="px-4 py-1 bg-red-400 text-white" onClick={() => removeRsvpToEvent(event.id)}>Cancel RSVP</button>
     } else {
-      return <button onClick={() => rsvpToEvent(event.id)}>RSVP for event</button>
+      return <button className="px-4 py-1 bg-green-500 text-white" onClick={() => rsvpToEvent(event.id)}>RSVP for event</button>
     }
   }
 
   const cancelEventButton = (event) => {
-    if (event.user_can_modify) {
-      return <button onClick={() => cancelEvent(event.id)}>Cancel Event</button>
+    if (event.user_is_creator) {
+      return <button className="px-4 py-1 bg-red-400 text-white" onClick={() => cancelEvent(event.id)}>Cancel Event</button>
     }
   }
 
@@ -46,70 +46,80 @@ function EventsList({ events, groups, removeRsvpToEvent, cancelEvent, rsvpToEven
   
   return (
     <div>
-      <h1>Events</h1>
-      {events.map(event => (
-        <p><Link to={`events/${event.id}`}>{event.title}</Link> --- {rsvpOrCancelButton(event)} {event.user_can_modify && '--- '} {cancelEventButton(event)}</p>
-      ))}
-      <h3>Add Event</h3>
-      <form onSubmit={handleSubmit}>
-        <p>
-          <label htmlFor="title">Title </label>
+      <h1 className="text-3xl my-4 font-bold">Events</h1>
+      <div className="space-y-4 my-4">
+        {events.map(event => (
+          <p className="flex justify-between items-center"><Link to={`events/${event.id}`}>{event.title}</Link> <span>{rsvpOrCancelButton(event)} {cancelEventButton(event)}</span></p>
+        ))}
+      </div>
+      <h3 className="text-xl mt-8 font-bold">Add Event</h3>
+      <form className="my-4 space-y-4" onSubmit={handleSubmit}>
+        <p className="flex items-center">
+          <label className="w-28 inline-block" htmlFor="title">Title </label>
           <input
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             name="title"
+            className="flex-grow md:inline-block border-b-2 border-black outline-none px-1 md:ml-2"
           />
         </p>
-        <p>
-          <label htmlFor="description"> Description </label>
+        <p className="flex items-center">
+          <label className="w-28 inline-block" htmlFor="description"> Description </label>
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             name="description"
+            className="flex-grow md:inline-block border-b-2 border-black outline-none px-1 md:ml-2"
           />
         </p>
-        <p>
-          <label htmlFor="name"> Location </label>
+        <p className="flex items-center">
+          <label className="w-28 inline-block" htmlFor="name"> Location </label>
           <input
             type="text"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
             name="location"
+            className="flex-grow md:inline-block border-b-2 border-black outline-none px-1 md:ml-2"
           />
         </p>
-        <p>
-          <label htmlFor="start_time"> Start Time </label>
+        <p className="flex items-center">
+          <label className="w-28 inline-block" htmlFor="start_time"> Start Time </label>
           <input
             type="datetime-local"
             value={startTime}
             onChange={(e) => setStartTime(e.target.value)}
             name="start_time"
+            className="flex-grow md:inline-block border-b-2 border-black outline-none px-1 md:ml-2"
           />
         </p>
-        <p>
-          <label htmlFor="end_time"> End Time </label>
+        <p className="flex items-center">
+          <label className="w-28 inline-block" htmlFor="end_time"> End Time </label>
           <input
             type="datetime-local"
             value={endTime}
             onChange={(e) => setEndTime(e.target.value)}
             name="end_time"
+            className="flex-grow md:inline-block border-b-2 border-black outline-none px-1 md:ml-2"
           />
         </p>
-        <p>
-          <label htmlfor="group_name">Group Name </label>
+        <p className="flex items-center">
+          <label className="w-28 inline-block" htmlfor="group_name">Group Name </label>
           <input
             type="text"
             name="group_name"
             value={groupName}
             list="groups"
             onChange={(e) => setGroupName(e.target.value)}
+            className="flex-grow md:inline-block border-b-2 border-black outline-none px-1 md:ml-2"
           />
           <datalist id="groups">
             {groups.map(group => <option>{group.name}</option>)}
           </datalist>
         </p>
-        {" "}<button type="submit">Add Event</button>
+        <p>
+          <button className="block bg-green-500 w-full py-2 mt-8" type="submit">Add Event</button>
+        </p>
       </form>
     </div>
   )
